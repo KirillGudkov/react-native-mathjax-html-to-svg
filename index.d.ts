@@ -9,4 +9,6 @@ declare module 'react-native-mathjax-html-to-svg' {
     };
 
     export function MathJaxSvg(props: Props) ;
+
+    export function getSvgNodes(text: string)
 }
