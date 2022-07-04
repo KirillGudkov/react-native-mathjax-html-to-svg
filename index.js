@@ -90,7 +90,7 @@ const GenerateSvgComponent = ({ item, fontSize, color }) => {
   return <SvgFromXml xml={svgText} />
 }
 
-const GenerateTextComponent = ({ fontSize, color, index, item, parentStyle = null }) => {
+const GenerateTextComponent = ({ fontSize, color, index, item, renderText, parentStyle = null }) => {
   let rnStyle = null
   let text = null
 
@@ -113,9 +113,7 @@ const GenerateTextComponent = ({ fontSize, color, index, item, parentStyle = nul
 
   return (
     text ?
-      (
-        <Text style={{ fontSize: (fontSize * 2), color, ...rnStyle }}>{text}</Text>
-      )
+      renderText(text)
       : (
         item?.kind === 'mjx-container' ?
           <GenerateSvgComponent item={item} fontSize={fontSize} color={color} />
@@ -124,7 +122,7 @@ const GenerateTextComponent = ({ fontSize, color, index, item, parentStyle = nul
             item.children?.length ?
               (
                 item.children.map((subItem, subIndex) => (
-                  <GenerateTextComponent key={`sub-${index}-${subIndex}`} color={color} fontSize={fontSize} item={subItem} index={subIndex} parentStyle={rnStyle} />
+                  <GenerateTextComponent renderText={renderText} key={`sub-${index}-${subIndex}`} color={color} fontSize={fontSize} item={subItem} index={subIndex} parentStyle={rnStyle} />
                 ))
               )
               : null
@@ -209,17 +207,18 @@ export const getSvgNodes = (texString, fontSize = 12, fontCache = false, color =
 
 export const MathJaxSvg = (props) => {
   const textext = props.children || ''
-  const fontSize = props.fontSize ? props.fontSize / 2 : 14
+  const fontSize = props.fontSize ? props.fontSize / 2.1 : 14
   const color = props.color ? props.color : 'black'
   const fontCache = props.fontCache
   const style = props.style ? props.style : null
+  const renderText = props.renderText ? props.renderText : null
 
   if (props.latex) {
     return (
       <Text style={[{}, style]}>
         {
           props.latex.map((item, index) => (
-            <GenerateTextComponent key={index} item={item} index={index} fontSize={fontSize} color={color} />
+            <GenerateTextComponent renderText={renderText} key={index} item={item} index={index} fontSize={fontSize} color={color} />
           ))
         }
       </Text>

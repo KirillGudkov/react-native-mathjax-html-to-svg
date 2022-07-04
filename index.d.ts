@@ -5,6 +5,8 @@ declare module 'react-native-mathjax-html-to-svg' {
         fontSize?: number
         color?: string
         fontCache?: boolean
+        latex?: any[]
+        renderText: (text: string) => JSX.Element
         style?: StyleProp<ViewStyle>
     };
 
