@@ -87,7 +87,11 @@ const GenerateSvgComponent = ({ item, fontSize, color }) => {
 
   svgText = applyColor(svgText, color)
 
-  return <SvgFromXml xml={svgText} />
+  return (
+    <View style={{ transform: [{ translateY: -2 }] }}>
+      <SvgFromXml xml={svgText} />
+    </View>
+  )
 }
 
 const GenerateTextComponent = ({ fontSize, color, index, item, renderText, parentStyle = null }) => {
